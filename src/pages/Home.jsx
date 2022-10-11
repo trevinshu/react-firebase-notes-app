@@ -1,23 +1,47 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { BsGoogle } from 'react-icons/bs';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../config/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 function Home() {
+  const signInWithGoogle = async () => {
+    const result = await signInWithPopup(auth, provider);
+    console.log(result);
+  };
+
+  const [user] = useAuthState(auth);
+
+  console.log(user);
   return (
     <div className="flex justify-center flex-col gap-4 p-5 m-auto">
-      <input type="email" name="email" id="emailInput" placeholder="Email" className="bg-base-300 border-none p-2 rounded-sm placeholder:uppercase placeholder:tracking-widest" />
-      <input type="password" name="password" id="passwordInput" placeholder="Password" className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest " />
-      <button type="submit" className="bg-primary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase">
-        Login
-      </button>
-      <button type="submit" className="bg-accent text-primary-content text-center flex items-center justify-center gap-3 border-none p-2 rounded-sm tracking-widest uppercase">
-        <BsGoogle className="text-xl" />
-        Login With Google
-      </button>
-      <h2 className="text-center text-neutral-content text-xl uppercase tracking-widest py-1">Or</h2>
-      <Link className="bg-secondary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase" to="/register">
-        Sign Up
-      </Link>
+      {user ? (
+        <div className="flex justify-center items-center gap-3">
+          <img src={user?.photoURL} alt="Profile Picture of The Signed In User" className="rounded-full h-10" />
+          <h2 className="text-2xl text-primary-content text-center tracking-widest">Welcome {user?.displayName}!</h2>
+        </div>
+      ) : (
+        <>
+          <input type="email" name="email" id="emailInput" placeholder="Email" className="bg-base-300 border-none p-2 rounded-sm placeholder:uppercase placeholder:tracking-widest" />
+          <input type="password" name="password" id="passwordInput" placeholder="Password" className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest " />
+          <button type="submit" className="bg-primary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase">
+            Login
+          </button>
+          <button
+            type="submit"
+            className="bg-accent text-primary-content text-center flex items-center justify-center gap-3 border-none p-2 rounded-sm tracking-widest uppercase"
+            onClick={signInWithGoogle}
+          >
+            <BsGoogle className="text-xl" />
+            Login With Google
+          </button>
+          <h2 className="text-center text-neutral-content text-xl uppercase tracking-widest py-1">Or</h2>
+          <Link className="bg-secondary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase" to="/register">
+            Sign Up
+          </Link>
+        </>
+      )}
     </div>
   );
 }

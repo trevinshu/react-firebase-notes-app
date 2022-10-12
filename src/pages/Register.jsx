@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -8,6 +8,7 @@ import { updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import Home from './Home';
+import AppContext from '../context/AppContext';
 
 function Register() {
   const schema = yup.object().shape({
@@ -25,23 +26,7 @@ function Register() {
     resolver: yupResolver(schema),
   });
 
-  const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
-
-  const navigate = useNavigate();
-
-  const registerUser = async (data) => {
-    const email = data.email;
-    const password = data.password;
-    const name = data.name;
-
-    try {
-      await createUserWithEmailAndPassword(email, password);
-      await updateProfile(auth.currentUser, { displayName: name });
-      navigate('/');
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const { user, error, loading, registerUser } = useContext(AppContext);
 
   if (error) {
     return (
@@ -64,7 +49,7 @@ function Register() {
             name="name"
             id="nameInput"
             placeholder="Name"
-            className="bg-base-300 border-none p-2 rounded-sm placeholder:uppercase placeholder:tracking-widest md:w-1/2"
+            className="bg-base-300 border-none p-2 rounded-sm placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
             {...register('name')}
           />
           <p className="text-error uppercase tracking-widest">{errors.name?.message}</p>
@@ -73,7 +58,7 @@ function Register() {
             name="email"
             id="emailInput"
             placeholder="Email"
-            className="bg-base-300 border-none p-2 rounded-sm placeholder:uppercase placeholder:tracking-widest md:w-1/2"
+            className="bg-base-300 border-none p-2 rounded-sm placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
             {...register('email')}
           />
           <p className="text-error uppercase tracking-widest">{errors.email?.message}</p>
@@ -82,7 +67,7 @@ function Register() {
             name="password"
             id="passwordInput"
             placeholder="Password"
-            className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest md:w-1/2"
+            className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
             {...register('password')}
           />
           <p className="text-error uppercase tracking-widest">{errors.password?.message}</p>
@@ -91,11 +76,11 @@ function Register() {
             name="password"
             id="confirmPasswordInput"
             placeholder="Confirm Password"
-            className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest md:w-1/2"
+            className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
             {...register('confirmPassword')}
           />
           <p className="text-error uppercase tracking-widest">{errors.confirmPassword?.message}</p>
-          <button type="submit" className="bg-primary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase md:w-1/2">
+          <button type="submit" className="bg-primary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase w-full md:w-1/2">
             Sign Up
           </button>
         </form>

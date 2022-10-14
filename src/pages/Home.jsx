@@ -1,64 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { BsGoogle } from 'react-icons/bs';
-import { signInWithPopup } from 'firebase/auth';
-import { auth, provider } from '../config/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import Spinner from '../components/Spinner';
 
 function Home() {
-  const signInWithGoogle = async () => {
-    await signInWithPopup(auth, provider);
-  };
-  const [user, loading, error] = useAuthState(auth);
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return (
-      <div>
-        <p>Error: {error}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="flex justify-center items-center flex-col gap-4 p-5 m-auto">
-      {user ? (
-        <div className="flex justify-center items-center gap-3">
-          <img src={user?.photoURL} alt="Profile Picture of The Signed In User" className="rounded-full h-10" />
-          <h2 className="text-2xl text-primary-content text-center tracking-widest">Welcome {user?.displayName}!</h2>
-        </div>
-      ) : (
-        <>
-          <h2 className="text-2xl text-primary-content text-center uppercase tracking-widest">Login:</h2>
-          <input type="email" name="email" id="emailInput" placeholder="Email" className="bg-base-300 border-none p-2 rounded-sm placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2" />
-          <input
-            type="password"
-            name="password"
-            id="passwordInput"
-            placeholder="Password"
-            className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
-          />
-          <button type="submit" className="bg-primary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase w-full md:w-1/2">
-            Login
-          </button>
-          <button
-            type="submit"
-            className="bg-secondary text-primary-content text-center flex items-center justify-center gap-3 border-none p-2 rounded-sm tracking-widest uppercase w-full md:w-1/2"
-            onClick={signInWithGoogle}
-          >
-            <BsGoogle className="text-xl" />
-            Login With Google
-          </button>
-          <h2 className="text-center text-neutral-content text-xl uppercase tracking-widest py-1">Or</h2>
-          <Link className="bg-accent text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase w-full md:w-1/2" to="/register">
-            Sign Up
-          </Link>
-        </>
-      )}
+      {/* <h2 className="text-2xl text-primary-content text-center tracking-widest">Welcome {user?.displayName}!</h2> */}
+      <h2 className="text-2xl text-primary-content text-center uppercase tracking-widest mb-2">Login or Sign Up:</h2>
+      <Link className="bg-primary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase w-full md:w-1/2" to="/login">
+        Login
+      </Link>
+      <h3 className="text-center text-neutral-content text-xl uppercase tracking-widest">Or</h3>
+      <Link className="bg-secondary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase w-full md:w-1/2" to="/register">
+        Sign Up
+      </Link>
     </div>
   );
 }

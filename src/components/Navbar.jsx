@@ -5,7 +5,7 @@ import AppContext from '../context/AppContext';
 import { CgProfile } from 'react-icons/cg';
 
 function Navbar() {
-  const { signOutUser, user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
 
   return (
     <nav className="flex justify-between items-center p-5">

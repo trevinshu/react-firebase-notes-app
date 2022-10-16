@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppContext from '../context/AppContext';
+import { motion } from 'framer-motion';
 
 function Home() {
   const { user } = useContext(AppContext);
 
   return (
     <>
-      <div className="flex justify-center items-center flex-col gap-4 p-5 m-auto">
+      <motion.div className="flex justify-center items-center flex-col gap-4 p-5 m-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
         {!user ? (
           <>
             <h2 className="text-2xl text-primary-content text-center uppercase tracking-widest mb-2">Login or Sign Up:</h2>
@@ -22,7 +23,7 @@ function Home() {
         ) : (
           <></>
         )}
-      </div>
+      </motion.div>
     </>
   );
 }

@@ -14,6 +14,7 @@ export const AppProvider = ({ children }) => {
   //Register User
   const registerUserWithEmailAndPassword = async (data) => {
     try {
+      setLoading(true);
       await createUserWithEmailAndPassword(auth, data.email, data.password);
       await updateProfile(auth.currentUser, { displayName: data.name });
       toast.success('Successfully registered new user.');
@@ -53,6 +54,7 @@ export const AppProvider = ({ children }) => {
   //Login with email and password
   const loginWithEmailAndPassword = async (data) => {
     try {
+      setLoading(true);
       await signInWithEmailAndPassword(auth, data.email, data.password);
       toast.success('Login Successful');
       navigate('/');

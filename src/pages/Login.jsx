@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Spinner from '../components/Spinner';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 function Login() {
   const { loginWithGoogle, loginWithEmailAndPassword, loading, user } = useContext(AppContext);
@@ -28,14 +29,14 @@ function Login() {
     if (user) {
       navigate('/');
     }
-  }, [user]);
+  }, []);
 
   return (
-    <div>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {loading ? (
         <Spinner />
       ) : (
-        <form className="flex justify-center items-center flex-col gap-4 p-5 m-auto" onSubmit={handleSubmit(loginWithEmailAndPassword)}>
+        <form className="flex justify-center items-center flex-col gap-4 p-5 " onSubmit={handleSubmit(loginWithEmailAndPassword)}>
           <h2 className="text-2xl text-primary-content text-center uppercase tracking-widest">Login:</h2>
           <p className="text-error uppercase tracking-widest">{errors.email?.message}</p>
           <input
@@ -60,7 +61,7 @@ function Login() {
           </button>
           <h3 className="text-center text-neutral-content text-xl uppercase tracking-widest py-1">Or</h3>
           <button
-            type="button"
+            type="submit"
             className="bg-secondary text-primary-content text-center flex items-center justify-center gap-3 border-none p-2 rounded-sm tracking-widest uppercase w-full md:w-1/2"
             onClick={loginWithGoogle}
           >
@@ -69,7 +70,7 @@ function Login() {
           </button>
         </form>
       )}
-    </div>
+    </motion.div>
   );
 }
 

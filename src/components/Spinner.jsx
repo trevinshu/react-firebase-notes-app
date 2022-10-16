@@ -3,8 +3,8 @@ import PropagateLoader from 'react-spinners/ClipLoader';
 
 function Spinner() {
   return (
-    <div className="flex items-center justify-center h-screen">
-      <PropagateLoader color="#641AE6" size={100} />
+    <div className="flex flex-col items-center justify-center h-screen">
+      <PropagateLoader color="#641AE6" size={100} className="flex" />
     </div>
   );
 }

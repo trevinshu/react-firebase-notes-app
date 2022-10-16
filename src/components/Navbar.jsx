@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { BsSunFill } from 'react-icons/bs';
 import AppContext from '../context/AppContext';
 import { CgProfile } from 'react-icons/cg';
 

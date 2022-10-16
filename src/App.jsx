@@ -4,7 +4,7 @@ const Home = React.lazy(() => import('./pages/Home'));
 const Login = React.lazy(() => import('./pages/Login'));
 const Register = React.lazy(() => import('./pages/Register'));
 const Profile = React.lazy(() => import('./pages/Profile'));
-import Navbar from './components/Navbar';
+const Navbar = React.lazy(() => import('./components/Navbar'));
 import { AppProvider } from './context/AppContext';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
@@ -16,7 +16,9 @@ function App() {
   return (
     <AppProvider>
       <div className="App">
-        <Navbar />
+        <React.Suspense fallback={<Spinner />}>
+          <Navbar />
+        </React.Suspense>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname} initial={true}>
             <Route

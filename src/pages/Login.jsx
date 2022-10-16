@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Spinner from '../components/Spinner';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 function Login() {
   const { loginWithGoogle, loginWithEmailAndPassword, loading, user } = useContext(AppContext);
@@ -32,7 +32,7 @@ function Login() {
   }, [user]);
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {loading ? (
         <Spinner />
       ) : (
@@ -70,7 +70,7 @@ function Login() {
           </button>
         </form>
       )}
-    </motion.div>
+    </m.div>
   );
 }
 

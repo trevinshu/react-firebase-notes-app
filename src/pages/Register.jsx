@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import AppContext from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import Spinner from '../components/Spinner';
 
 function Register() {
@@ -36,7 +36,7 @@ function Register() {
   }, [user]);
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {loading ? (
         <Spinner />
       ) : (
@@ -85,7 +85,7 @@ function Register() {
           </form>
         </>
       )}
-    </motion.div>
+    </m.div>
   );
 }
 

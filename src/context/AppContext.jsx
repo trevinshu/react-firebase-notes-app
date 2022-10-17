@@ -1,6 +1,17 @@
 import { createContext, useEffect, useState } from 'react';
 import { auth, googleProvider } from '../config/firebase';
-import { signInWithPopup, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
+import {
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  updateEmail,
+  updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+} from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,10 +22,18 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   //Register User
   const registerUserWithEmailAndPassword = async (data) => {
     try {
-      setLoading(true);
       await createUserWithEmailAndPassword(auth, data.email, data.password);
       await updateProfile(auth.currentUser, { displayName: data.name });
       toast.success('Successfully registered new user.');
@@ -24,15 +43,6 @@ export const AppProvider = ({ children }) => {
       return toast.error('User already exists.');
     }
   };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   //Login with Google Account
   const loginWithGoogle = async () => {
@@ -47,14 +57,54 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  //Update User's Name
+  const updateUserName = async (data) => {
+    try {
+      setLoading(true);
+      await updateProfile(auth.currentUser, { displayName: data.name });
+      toast.success('Successfully updated your name.');
+    } catch (error) {
+      console.log(error);
+      return toast.error('Update name failed. Please try again.');
+    }
+  };
+
+  //Update User's Password
+  const updateUserPassword = async (data) => {
+    try {
+      const credential = EmailAuthProvider.credential(auth.currentUser.email, data.currentPassword);
+      setLoading(true);
+      await reauthenticateWithCredential(auth.currentUser, credential);
+      await updatePassword(auth.currentUser, data.newPassword);
+      reset();
+      toast.success('Successfully updated your password.');
+    } catch (error) {
+      console.log(error);
+      return toast.error('Update password failed. Please try again.');
+    }
+  };
+
+  //Update User's Email Address
+  const updateUserEmail = async (data) => {
+    try {
+      setLoading(true);
+      await updateEmail(auth.currentUser, data.email);
+      toast.success('Successfully updated your email.');
+    } catch (error) {
+      console.log(error);
+      return toast.error('Update email failed. Please try again.');
+    }
+  };
+
+  //Logout user
   const signOutUser = async () => {
+    setLoading(true);
     await signOut(auth);
   };
 
   //Login with email and password
   const loginWithEmailAndPassword = async (data) => {
     try {
-      setLoading(true);
       await signInWithEmailAndPassword(auth, data.email, data.password);
       toast.success('Login Successful');
       navigate('/');
@@ -64,7 +114,13 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  return <AppContext.Provider value={{ loginWithGoogle, registerUserWithEmailAndPassword, loginWithEmailAndPassword, loading, setLoading, user, signOutUser }}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider
+      value={{ loginWithGoogle, registerUserWithEmailAndPassword, loginWithEmailAndPassword, loading, setLoading, user, signOutUser, updateUserName, updateUserEmail, updateUserPassword }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 export default AppContext;

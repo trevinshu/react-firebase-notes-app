@@ -18,43 +18,48 @@ function App() {
     <AppProvider>
       <LazyMotion features={domAnimation}>
         <div className="App">
-          <Navbar />
-          <AnimatePresence mode="wait">
-            <Routes location={location} key={location.pathname} initial={true}>
-              <Route
-                path="/"
-                element={
-                  <React.Suspense fallback={<Spinner />}>
-                    <Home />
-                  </React.Suspense>
-                }
-              />
-              <Route
-                path="/login"
-                element={
-                  <React.Suspense fallback={<Spinner />}>
-                    <Login />
-                  </React.Suspense>
-                }
-              />
-              <Route
-                path="/register"
-                element={
-                  <React.Suspense fallback={<Spinner />}>
-                    <Register />
-                  </React.Suspense>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <React.Suspense fallback={<Spinner />}>
-                    <Profile />
-                  </React.Suspense>
-                }
-              />
-            </Routes>
-          </AnimatePresence>
+          <header>
+            <Navbar />
+          </header>
+          <main>
+            <AnimatePresence mode="wait">
+              <Routes location={location} key={location.pathname} initial={true}>
+                <Route
+                  path="/"
+                  element={
+                    <React.Suspense fallback={<Spinner />}>
+                      <Home />
+                    </React.Suspense>
+                  }
+                />
+                <Route
+                  path="/login"
+                  element={
+                    <React.Suspense fallback={<Spinner />}>
+                      <Login />
+                    </React.Suspense>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <React.Suspense fallback={<Spinner />}>
+                      <Register />
+                    </React.Suspense>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <React.Suspense fallback={<Spinner />}>
+                      <Profile />
+                    </React.Suspense>
+                  }
+                />
+              </Routes>
+            </AnimatePresence>
+          </main>
+
           <ToastContainer />
         </div>
       </LazyMotion>

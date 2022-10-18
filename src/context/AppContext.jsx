@@ -19,7 +19,6 @@ const AppContext = createContext({});
 
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,7 +46,6 @@ export const AppProvider = ({ children }) => {
   //Login with Google Account
   const loginWithGoogle = async () => {
     try {
-      setLoading(true);
       await signInWithPopup(auth, googleProvider);
       toast.success('Login Successful');
       navigate('/');
@@ -60,7 +58,6 @@ export const AppProvider = ({ children }) => {
   //Update User's Name
   const updateUserName = async (data) => {
     try {
-      setLoading(true);
       await updateProfile(auth.currentUser, { displayName: data.name });
       toast.success('Successfully updated your name.');
     } catch (error) {
@@ -73,10 +70,8 @@ export const AppProvider = ({ children }) => {
   const updateUserPassword = async (data) => {
     try {
       const credential = EmailAuthProvider.credential(auth.currentUser.email, data.currentPassword);
-      setLoading(true);
       await reauthenticateWithCredential(auth.currentUser, credential);
       await updatePassword(auth.currentUser, data.newPassword);
-      reset();
       toast.success('Successfully updated your password.');
     } catch (error) {
       console.log(error);
@@ -87,7 +82,6 @@ export const AppProvider = ({ children }) => {
   //Update User's Email Address
   const updateUserEmail = async (data) => {
     try {
-      setLoading(true);
       await updateEmail(auth.currentUser, data.email);
       toast.success('Successfully updated your email.');
     } catch (error) {
@@ -98,7 +92,6 @@ export const AppProvider = ({ children }) => {
 
   //Logout user
   const signOutUser = async () => {
-    setLoading(true);
     await signOut(auth);
   };
 
@@ -115,9 +108,7 @@ export const AppProvider = ({ children }) => {
   };
 
   return (
-    <AppContext.Provider
-      value={{ loginWithGoogle, registerUserWithEmailAndPassword, loginWithEmailAndPassword, loading, setLoading, user, signOutUser, updateUserName, updateUserEmail, updateUserPassword }}
-    >
+    <AppContext.Provider value={{ loginWithGoogle, registerUserWithEmailAndPassword, loginWithEmailAndPassword, user, signOutUser, updateUserName, updateUserEmail, updateUserPassword }}>
       {children}
     </AppContext.Provider>
   );

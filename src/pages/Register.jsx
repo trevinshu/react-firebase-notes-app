@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import AppContext from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { m } from 'framer-motion';
-import Spinner from '../components/Spinner';
+import PageHeading from '../components/PageHeading';
 
 function Register() {
   const { registerUserWithEmailAndPassword, user, loading } = useContext(AppContext);
@@ -37,7 +37,7 @@ function Register() {
 
   return (
     <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <h2 className="text-2xl text-primary-content text-center uppercase tracking-widest">Sign Up:</h2>
+      <PageHeading>Sign Up</PageHeading>
       <form className="flex justify-center items-center flex-col gap-2 p-5" onSubmit={handleSubmit(registerUserWithEmailAndPassword)}>
         <p className="text-error uppercase tracking-widest">{errors.name?.message}</p>
         <input
@@ -45,7 +45,7 @@ function Register() {
           name="name"
           id="nameInput"
           placeholder="Name"
-          className="bg-base-300 border-none p-2 rounded-sm placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
+          className="bg-base-300 border-none p-2 rounded-sm placeholder:uppercase placeholder:tracking-widest w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
           {...register('name')}
         />
         <p className="text-error uppercase tracking-widest">{errors.email?.message}</p>
@@ -54,7 +54,7 @@ function Register() {
           name="email"
           id="emailInput"
           placeholder="Email"
-          className="bg-base-300 border-none p-2 rounded-sm placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
+          className="bg-base-300 border-none p-2 rounded-sm placeholder:uppercase placeholder:tracking-widest w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
           {...register('email')}
         />
         <p className="text-error uppercase tracking-widest">{errors.password?.message}</p>
@@ -63,7 +63,7 @@ function Register() {
           name="password"
           id="passwordInput"
           placeholder="Password"
-          className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
+          className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
           {...register('password')}
         />
         <p className="text-error uppercase tracking-widest">{errors.confirmPassword?.message}</p>
@@ -72,10 +72,13 @@ function Register() {
           name="password"
           id="confirmPasswordInput"
           placeholder="Confirm Password"
-          className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
+          className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
           {...register('confirmPassword')}
         />
-        <button type="submit" className="bg-primary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase w-full md:w-1/2">
+        <button
+          type="submit"
+          className="bg-primary text-primary-content text-center border-none p-2 mt-4 rounded-sm tracking-widest uppercase hover:bg-primary-focus w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
+        >
           Sign Up
         </button>
       </form>

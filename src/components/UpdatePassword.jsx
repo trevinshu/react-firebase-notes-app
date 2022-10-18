@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import AppContext from '../context/AppContext';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -15,11 +15,19 @@ function UpdatePassword() {
   const {
     register,
     handleSubmit,
+    formState,
     formState: { errors },
     reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({ currentPassword: '', newPassword: '' });
+    }
+  }, [formState, reset]);
+
   return (
     <form className="flex flex-col items-center justify-center gap-4 mb-5 w-full" onSubmit={handleSubmit(updateUserPassword)}>
       <h2 className="text-xl text-primary-content">Update Password:</h2>

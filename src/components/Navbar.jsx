@@ -8,7 +8,7 @@ function Navbar() {
 
   return (
     <nav className="flex justify-between items-center p-5">
-      <Link to={'/'} className="text-3xl text-primary-content uppercase tracking-widest">
+      <Link to={'/'} className="text-2xl text-primary-content uppercase tracking-widest">
         Notes App
       </Link>
       {user ? (

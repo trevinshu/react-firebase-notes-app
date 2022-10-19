@@ -19,7 +19,6 @@ function Profile() {
     }
   }, []);
 
-  console.log(user);
   return (
     <m.div className="flex flex-col items-center justify-center gap-8 p-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <UpdateName />

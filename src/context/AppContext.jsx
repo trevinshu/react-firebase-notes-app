@@ -82,6 +82,8 @@ export const AppProvider = ({ children }) => {
   //Update User's Email Address
   const updateUserEmail = async (data) => {
     try {
+      const credential = EmailAuthProvider.credential(auth.currentUser.email, data.password);
+      await reauthenticateWithCredential(auth.currentUser, credential);
       await updateEmail(auth.currentUser, data.email);
       toast.success('Successfully updated your email.');
     } catch (error) {
@@ -92,7 +94,12 @@ export const AppProvider = ({ children }) => {
 
   //Logout user
   const signOutUser = async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   //Login with email and password

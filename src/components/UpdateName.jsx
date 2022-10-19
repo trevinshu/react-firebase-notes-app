@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import AppContext from '../context/AppContext';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,26 +14,35 @@ function UpdateName() {
   const {
     register,
     handleSubmit,
+    formState,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
-  return (
-    <form onSubmit={handleSubmit(updateUserName)} className="flex flex-col items-center justify-center gap-4 mb-5 w-full">
-      <div>
-        <h2 className=" text-xl text-primary-content">Current Name: {user?.displayName}</h2>
-      </div>
 
-      <p className="text-error uppercase tracking-widest">{errors.name?.message}</p>
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({ name: '' });
+    }
+  }, [formState, reset]);
+
+  return (
+    <form onSubmit={handleSubmit(updateUserName)} className="flex flex-col justify-center items-center w-full gap-2">
+      <label className=" text-xl text-primary-content">Current Name: {user?.displayName}</label>
       <input
         type="text"
         name="name"
         id="nameInput"
         placeholder="New Name"
-        className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
+        className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
         {...register('name')}
       />
-      <button type="submit" className="bg-primary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase w-full md:w-1/2">
+      <p className="text-error uppercase tracking-widest">{errors.name?.message}</p>
+      <button
+        type="submit"
+        className="bg-primary text-primary-content font-bold file:text-center border-none p-2 rounded-sm tracking-widest uppercase w-full hover:bg-primary-focus sm:w-1/2 lg:w-1/3 xl:w-1/4"
+      >
         Update Name
       </button>
     </form>

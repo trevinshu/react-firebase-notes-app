@@ -12,7 +12,7 @@ function Home() {
       <m.div className="flex justify-center items-center flex-col gap-4 p-5 m-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
         {!user ? (
           <>
-            <PageHeading>Login or Sign Up:</PageHeading>
+            <PageHeading>Login or Sign Up</PageHeading>
             <Link
               className="bg-primary text-primary-content text-center font-bold border-none p-2 rounded-sm tracking-widest uppercase mt-2 hover:bg-primary-focus w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
               to="/login"

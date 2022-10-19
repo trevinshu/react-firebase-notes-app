@@ -29,27 +29,30 @@ function UpdatePassword() {
   }, [formState, reset]);
 
   return (
-    <form className="flex flex-col items-center justify-center gap-4 mb-5 w-full" onSubmit={handleSubmit(updateUserPassword)}>
-      <h2 className="text-xl text-primary-content">Update Password:</h2>
-      <p className="text-error uppercase tracking-widest">{errors.currentPassword?.message}</p>
+    <form className="flex flex-col justify-center items-center w-full gap-2" onSubmit={handleSubmit(updateUserPassword)}>
+      <label className="text-xl text-primary-content">Update Password:</label>
       <input
         type="password"
         name="currentPassword"
         id="currentPasswordInput"
         placeholder="Current Password"
-        className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
+        className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
         {...register('currentPassword')}
       />
-      <p className="text-error uppercase tracking-widest">{errors.newPassword?.message}</p>
+      <p className="text-error uppercase tracking-widest">{errors.currentPassword?.message}</p>
       <input
         type="password"
         name="newPassword"
         id="newPasswordInput"
         placeholder="Confirm New Password"
-        className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full md:w-1/2"
+        className="bg-base-300 border-none p-2 rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
         {...register('newPassword')}
       />
-      <button type="submit" className="bg-primary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase w-full md:w-1/2">
+      <p className="text-error uppercase tracking-widest">{errors.newPassword?.message}</p>
+      <button
+        type="submit"
+        className="bg-primary text-primary-content font-bold text-center border-none p-2 rounded-sm tracking-widest uppercase w-full hover:bg-primary-focus sm:w-1/2 lg:w-1/3 xl:w-1/4"
+      >
         Update Password
       </button>
     </form>

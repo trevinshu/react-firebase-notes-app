@@ -77,7 +77,7 @@ function Register() {
         />
         <button
           type="submit"
-          className="bg-primary text-primary-content text-center border-none p-2 mt-4 rounded-sm tracking-widest uppercase hover:bg-primary-focus w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
+          className="bg-primary text-primary-content text-center border-none p-2 mt-2 rounded-sm tracking-widest uppercase hover:bg-primary-focus w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
         >
           Sign Up
         </button>

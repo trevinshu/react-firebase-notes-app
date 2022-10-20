@@ -22,11 +22,16 @@ function Profile() {
   return (
     <m.div className="flex flex-col items-center justify-center gap-8 p-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <UpdateName />
-      <UpdateEmail />
-      <UpdatePassword />
+      {user?.providerData?.[0]?.providerId === 'password' ? (
+        <>
+          <UpdateEmail />
+          <UpdatePassword />
+        </>
+      ) : (
+        <></>
+      )}
       <Logout />
       <DeleteAccount />
-      {user?.providerData[0]?.providerId === 'password' ? <h2>Hello</h2> : <></>}
     </m.div>
   );
 }

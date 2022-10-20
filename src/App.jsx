@@ -4,6 +4,7 @@ const Home = React.lazy(() => import('./pages/Home'));
 const Login = React.lazy(() => import('./pages/Login'));
 const Register = React.lazy(() => import('./pages/Register'));
 const Profile = React.lazy(() => import('./pages/Profile'));
+const ErrorPage = React.lazy(() => import('./pages/ErrorPage'));
 import Navbar from './components/Navbar';
 import { AppProvider } from './context/AppContext';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,6 +25,14 @@ function App() {
           <main>
             <AnimatePresence mode="wait">
               <Routes location={location} key={location.pathname} initial={true}>
+                <Route
+                  path="*"
+                  element={
+                    <React.Suspense fallback={<Spinner />}>
+                      <ErrorPage />
+                    </React.Suspense>
+                  }
+                />
                 <Route
                   path="/"
                   element={

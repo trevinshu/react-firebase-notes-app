@@ -5,7 +5,7 @@ import { m } from 'framer-motion';
 import PageHeading from '../components/PageHeading';
 import AddNote from '../components/AddNote';
 const LoginOrSignUp = React.lazy(() => import('../components/LoginOrSignUp'));
-import DisplayNotes from '../components/DisplayNotes';
+const DisplayNotes = React.lazy(() => import('../components/DisplayNotes'));
 import Spinner from '../components/Spinner';
 
 function Home() {
@@ -23,7 +23,9 @@ function Home() {
       ) : (
         <div>
           <AddNote />
-          <DisplayNotes />
+          <React.Suspense fallback={<Spinner />}>
+            <DisplayNotes />
+          </React.Suspense>
         </div>
       )}
     </m.div>

@@ -8,7 +8,11 @@ function AddNote() {
   const { addNote } = useContext(AppContext);
 
   const schema = yup.object().shape({
-    noteContent: yup.string().required('Note Content is required').min(5, 'Note Content must be at least 5 characters in length').max(280),
+    noteContent: yup
+      .string()
+      .required('Note content is required')
+      .min(5, 'The note must be at least 5 characters in length')
+      .max(280, 'The note must be at less than or equal to 280 characters in length'),
   });
 
   const {
@@ -28,9 +32,9 @@ function AddNote() {
   }, [formState, reset]);
   return (
     <>
-      <form className="flex justify-center items-center p-5 gap-4" onSubmit={handleSubmit(addNote)}>
+      <form className="flex justify-center items-center flex-wrap p-5 gap-4" onSubmit={handleSubmit(addNote)}>
         <textarea
-          className="bg-base-300 border-none resize-none rounded-sm  placeholder:uppercase placeholder:tracking-widest w-full p-5 md:w-1/2 lg:w-1/3"
+          className="bg-base-300 border-none resize-none rounded-sm  placeholder:uppercase placeholder:tracking-widest h-fit w-full p-5 md:w-1/2 lg:w-1/3"
           placeholder="Note Content"
           {...register('noteContent')}
         ></textarea>

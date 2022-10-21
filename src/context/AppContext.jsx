@@ -14,7 +14,7 @@ import {
 } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, where } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, where, limit } from 'firebase/firestore';
 
 const AppContext = createContext({});
 
@@ -132,23 +132,26 @@ export const AppProvider = ({ children }) => {
 
   const [notes, setAllNotes] = useState([]);
   //Get Posts
-  const getPosts = async (userId, time) => {
+  const getPosts = async (userId) => {
     try {
-      const q = query(collectionRef, where('user', '==', userId), orderBy('time', 'desc'));
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        setAllNotes(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      });
-      return unsubscribe;
+      if (user) {
+        const q = query(collectionRef, where('user', '==', userId), orderBy('time', 'desc'));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+          setAllNotes(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        });
+        return unsubscribe;
+      } else {
+        return;
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getPosts(user.uid);
-  }, [user.uid]);
+    getPosts(user?.uid);
+  }, [user?.uid]);
 
-  console.log(notes);
   return (
     <AppContext.Provider
       value={{ loginWithGoogle, registerUserWithEmailAndPassword, loginWithEmailAndPassword, user, signOutUser, updateUserName, updateUserEmail, updateUserPassword, addNote, notes }}

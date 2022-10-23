@@ -14,12 +14,12 @@ import {
 } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, where, limit } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, where, limit, getDocs, startAfter, collectionGroup, startAt, endAt, limitToLast, endBefore } from 'firebase/firestore';
 
 const AppContext = createContext({});
 
 export const AppProvider = ({ children }) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -130,31 +130,84 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const [notes, setAllNotes] = useState([]);
-  //Get Posts
-  const getPosts = async (userId) => {
-    try {
-      if (user) {
-        const q = query(collectionRef, where('user', '==', userId), orderBy('time', 'desc'));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-          setAllNotes(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  const [notes, setNotes] = useState([]);
+  const [lastDocs, setLastDocs] = useState(null);
+  const [firstDocs, setFirstDocs] = useState(null);
+  const [isEmpty, setIsEmpty] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), limit(4));
+
+      const unsubscribe = onSnapshot(q, (documents) => {
+        const tempNotes = [];
+        documents.forEach((document) => {
+          tempNotes.push({
+            id: document.id,
+            ...document.data(),
+          });
         });
-        return unsubscribe;
-      } else {
-        return;
-      }
-    } catch (error) {
-      console.log(error);
+        setNotes(tempNotes);
+        setLastDocs(documents.docs[documents.docs.length - 1]);
+        setFirstDocs(documents.docs[0]);
+      });
+      return () => unsubscribe();
+    } else {
+      return;
+    }
+  }, [user]);
+
+  const fetchMore = async () => {
+    const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), startAfter(lastDocs.data().time), limit(4));
+
+    const documents = await getDocs(q);
+    updateState(documents);
+  };
+
+  const fetchLess = async () => {
+    const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), endBefore(firstDocs.data().time), limitToLast(4));
+
+    const documents = await getDocs(q);
+    updateState(documents);
+  };
+
+  const updateState = (documents) => {
+    if (!documents.empty) {
+      const tempNotes = [];
+      documents.forEach((document) => {
+        tempNotes.push({
+          id: document.id,
+          ...document.data(),
+        });
+      });
+      setNotes(tempNotes);
+    }
+    if (documents?.docs[0]) {
+      setFirstDocs(documents.docs[0]);
+    } else {
+    }
+    if (documents?.docs[documents.docs.length - 1]) {
+      setLastDocs(documents.docs[documents.docs.length - 1]);
     }
   };
 
-  useEffect(() => {
-    getPosts(user?.uid);
-  }, [user?.uid]);
-
   return (
     <AppContext.Provider
-      value={{ loginWithGoogle, registerUserWithEmailAndPassword, loginWithEmailAndPassword, user, signOutUser, updateUserName, updateUserEmail, updateUserPassword, addNote, notes }}
+      value={{
+        loginWithGoogle,
+        registerUserWithEmailAndPassword,
+        loginWithEmailAndPassword,
+        user,
+        signOutUser,
+        updateUserName,
+        updateUserEmail,
+        updateUserPassword,
+        addNote,
+        fetchMore,
+        fetchLess,
+        notes,
+        isEmpty,
+      }}
     >
       {children}
     </AppContext.Provider>

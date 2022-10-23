@@ -9,8 +9,7 @@ const DisplayNotes = React.lazy(() => import('../components/DisplayNotes'));
 import Spinner from '../components/Spinner';
 
 function Home() {
-  const { user } = useContext(AppContext);
-
+  const { user, fetchMore, fetchLess } = useContext(AppContext);
   return (
     <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {!user ? (
@@ -26,6 +25,14 @@ function Home() {
           <React.Suspense fallback={<Spinner />}>
             <DisplayNotes />
           </React.Suspense>
+          <div className="flex justify-center items-center gap-5">
+            <button onClick={fetchLess} className="text-2xl bg-base-200 px-5 py-2 rounded-sm">
+              Previous
+            </button>
+            <button onClick={fetchMore} className="text-2xl bg-base-200 px-5 py-2 rounded-sm">
+              Next
+            </button>
+          </div>
         </div>
       )}
     </m.div>

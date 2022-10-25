@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import AppContext from '../context/AppContext';
 import { m } from 'framer-motion';
 import PageHeading from '../components/PageHeading';
@@ -10,6 +9,7 @@ import Spinner from '../components/Spinner';
 
 function Home() {
   const { user, fetchMore, fetchLess } = useContext(AppContext);
+
   return (
     <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {!user ? (

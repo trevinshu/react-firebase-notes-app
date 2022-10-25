@@ -14,7 +14,7 @@ import {
 } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, where, limit, getDocs, startAfter, collectionGroup, startAt, endAt, limitToLast, endBefore } from 'firebase/firestore';
+import { addDoc, doc, collection, onSnapshot, orderBy, query, serverTimestamp, where, limit, getDocs, startAfter, limitToLast, endBefore, updateDoc } from 'firebase/firestore';
 
 const AppContext = createContext({});
 
@@ -137,7 +137,7 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), limit(4));
+      const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), limit(5));
 
       const unsubscribe = onSnapshot(q, (documents) => {
         const tempNotes = [];
@@ -158,14 +158,14 @@ export const AppProvider = ({ children }) => {
   }, [user]);
 
   const fetchMore = async () => {
-    const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), startAfter(lastDocs.data().time), limit(4));
+    const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), startAfter(lastDocs.data().time), limit(5));
 
     const documents = await getDocs(q);
     updateState(documents);
   };
 
   const fetchLess = async () => {
-    const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), endBefore(firstDocs.data().time), limitToLast(4));
+    const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), endBefore(firstDocs.data().time), limitToLast(5));
 
     const documents = await getDocs(q);
     updateState(documents);
@@ -191,6 +191,40 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const [formValues, setFormValues] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  function editForm(note) {
+    setShowModal(true);
+    document.body.style.overflow = 'hidden';
+    console.log(note);
+    setFormValues(note);
+  }
+
+  function closeModal() {
+    setShowModal(false);
+    setFormValues(null);
+    document.body.style.overflow = 'auto';
+    console.log('hi');
+  }
+
+  const updateNote = async (data) => {
+    try {
+      await updateDoc(doc(collectionRef, data.id), {
+        noteContent: data.noteContent,
+        time: serverTimestamp(),
+      });
+      toast.success('Successfully updated a note');
+      setShowModal(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const copyNote = (note) => {
+    navigator.clipboard.writeText(note?.noteContent);
+    toast.success('Noted Copied!');
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -207,6 +241,12 @@ export const AppProvider = ({ children }) => {
         fetchLess,
         notes,
         isEmpty,
+        showModal,
+        editForm,
+        updateNote,
+        closeModal,
+        formValues,
+        copyNote,
       }}
     >
       {children}

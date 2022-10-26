@@ -133,7 +133,6 @@ export const AppProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
   const [lastDocs, setLastDocs] = useState(null);
   const [firstDocs, setFirstDocs] = useState(null);
-  const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -192,16 +191,17 @@ export const AppProvider = ({ children }) => {
   };
 
   const [formValues, setFormValues] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+
   function editForm(note) {
-    setShowModal(true);
+    setShowEditModal(true);
     document.body.style.overflow = 'hidden';
     console.log(note);
     setFormValues(note);
   }
 
   function closeModal() {
-    setShowModal(false);
+    setShowEditModal(false);
     setFormValues(null);
     document.body.style.overflow = 'auto';
     console.log('hi');
@@ -214,7 +214,7 @@ export const AppProvider = ({ children }) => {
         time: serverTimestamp(),
       });
       toast.success('Successfully updated a note');
-      setShowModal(false);
+      setShowEditModal(false);
     } catch (error) {
       console.log(error);
     }
@@ -240,8 +240,7 @@ export const AppProvider = ({ children }) => {
         fetchMore,
         fetchLess,
         notes,
-        isEmpty,
-        showModal,
+        showEditModal,
         editForm,
         updateNote,
         closeModal,

@@ -25,7 +25,7 @@ function Home() {
           <React.Suspense fallback={<Spinner />}>
             <DisplayNotes />
           </React.Suspense>
-          <div className="flex justify-center items-center gap-5">
+          <div className="flex justify-center items-center gap-5 p-5">
             <button onClick={fetchLess} className="text-2xl bg-base-200 px-5 py-2 rounded-sm">
               Previous
             </button>

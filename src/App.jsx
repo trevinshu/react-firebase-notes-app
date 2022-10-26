@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 const Home = React.lazy(() => import('./pages/Home'));
 const Login = React.lazy(() => import('./pages/Login'));
@@ -23,50 +23,17 @@ function App() {
             <Navbar />
           </header>
           <main>
-            <AnimatePresence mode="wait">
-              <Routes location={location} key={location.pathname} initial={true}>
-                <Route
-                  path="*"
-                  element={
-                    <React.Suspense fallback={<Spinner />}>
-                      <ErrorPage />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path="/"
-                  element={
-                    <React.Suspense fallback={<Spinner />}>
-                      <Home />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path="/login"
-                  element={
-                    <React.Suspense fallback={<Spinner />}>
-                      <Login />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path="/register"
-                  element={
-                    <React.Suspense fallback={<Spinner />}>
-                      <Register />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    <React.Suspense fallback={<Spinner />}>
-                      <Profile />
-                    </React.Suspense>
-                  }
-                />
-              </Routes>
-            </AnimatePresence>
+            <Suspense fallback={<Spinner />}>
+              <AnimatePresence mode="wait">
+                <Routes location={location} key={location.pathname} initial={true}>
+                  <Route path="*" element={<ErrorPage />} />
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/profile" element={<Profile />} />
+                </Routes>
+              </AnimatePresence>
+            </Suspense>
           </main>
 
           <ToastContainer />

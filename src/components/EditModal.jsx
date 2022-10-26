@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 function EditModal() {
-  const { showModal, closeModal, updateNote, formValues } = useContext(AppContext);
+  const { showEditModal, closeModal, updateNote, formValues } = useContext(AppContext);
 
   const schema = yup.object().shape({
     noteContent: yup
@@ -42,7 +42,7 @@ function EditModal() {
 
   return (
     <>
-      {showModal ? (
+      {showEditModal ? (
         <div className="flex fixed inset-0 bg-neutral-focus bg-opacity-70 h-full w-full">
           <div className="m-auto bg-base-200 h-[100%] w-[100%] p-5 md:rounded-md md:shadow-md md:h-[75%] md:w-[75%] lg:h-[50%] lg:w-[50%]">
             <div className="flex justify-between items-center">

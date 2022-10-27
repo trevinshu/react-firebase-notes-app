@@ -4,28 +4,32 @@ import { m } from 'framer-motion';
 import { MdContentCopy, MdEdit } from 'react-icons/md';
 import { FaTrash } from 'react-icons/fa';
 import EditModal from './EditModal';
+import DeleteModal from './DeleteModal';
 
 function DisplayNotes() {
-  const { notes, editForm, copyNote } = useContext(AppContext);
+  const { notes, editForm, copyNote, initDeleteNoteModal } = useContext(AppContext);
+
+  // console.log(notes[0].time.toDate().toDateString());
 
   return (
-    <m.div className="grid m-5 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <div className="grid p-5 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
       {notes.map((note) => {
         return (
-          <div key={note?.id} className="h-[35vh] flex flex-col flex-1 bg-base-300 p-5 shadow-md rounded-sm ">
+          <m.div key={note?.id} className="max-h-full flex flex-col flex-1 bg-base-300 p-5 shadow-md rounded-sm " initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div>
               <p className="break-words text-xl tracking-wide">{note?.noteContent}</p>
             </div>
-            <div className="flex place-content-end items-center gap-5 mt-auto">
+            <div className="flex place-content-end items-center gap-5 pt-5 mt-auto">
               <MdContentCopy className="text-xl cursor-pointer hover:text-primary" onClick={() => copyNote(note)} />
-              <FaTrash className="text-xl cursor-pointer hover:text-error" />
+              <FaTrash className="text-xl cursor-pointer hover:text-error" onClick={() => initDeleteNoteModal(note)} />
               <MdEdit className="text-xl cursor-pointer hover:text-accent" onClick={() => editForm(note)} />
             </div>
-          </div>
+          </m.div>
         );
       })}
       <EditModal />
-    </m.div>
+      <DeleteModal />
+    </div>
   );
 }
 

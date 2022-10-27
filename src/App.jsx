@@ -12,13 +12,14 @@ import { ToastContainer } from 'react-toastify';
 import { AnimatePresence } from 'framer-motion';
 import Spinner from './components/Spinner';
 import { LazyMotion, domAnimation } from 'framer-motion';
+import Footer from './components/Footer';
 
 function App() {
   const location = useLocation();
   return (
     <AppProvider>
       <LazyMotion features={domAnimation}>
-        <div className="App">
+        <div className="App flex flex-col min-h-screen">
           <header>
             <Navbar />
           </header>
@@ -35,7 +36,7 @@ function App() {
               </AnimatePresence>
             </Suspense>
           </main>
-
+          <Footer />
           <ToastContainer />
         </div>
       </LazyMotion>

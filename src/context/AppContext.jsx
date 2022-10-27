@@ -15,7 +15,6 @@ import {
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { addDoc, doc, collection, onSnapshot, orderBy, query, serverTimestamp, where, limit, getDocs, startAfter, limitToLast, endBefore, updateDoc, deleteDoc } from 'firebase/firestore';
-import { async } from '@firebase/util';
 
 const AppContext = createContext({});
 
@@ -243,8 +242,8 @@ export const AppProvider = ({ children }) => {
   const deleteNote = async () => {
     try {
       await deleteDoc(doc(collectionRef, deleteSelectedNote.id));
-      toast.success('Note deleted successfully');
       setShowDeleteModal(false);
+      toast.success('Note deleted successfully');
       document.body.style.overflow = 'auto';
     } catch (error) {
       console.log(error);

@@ -1,6 +1,6 @@
 import { MdClose } from 'react-icons/md';
 import PageHeading from './PageHeading';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import AppContext from '../context/AppContext';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

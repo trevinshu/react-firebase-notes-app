@@ -8,8 +8,7 @@ import DeleteModal from './DeleteModal';
 
 function DisplayNotes() {
   const { notes, editForm, copyNote, initDeleteNoteModal } = useContext(AppContext);
-
-  // console.log(notes[0].time.toDate().toDateString());
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
     <div className="grid p-5 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
@@ -19,10 +18,13 @@ function DisplayNotes() {
             <div>
               <p className="break-words text-xl tracking-wide">{note?.noteContent}</p>
             </div>
-            <div className="flex place-content-end items-center gap-5 pt-5 mt-auto">
-              <MdContentCopy className="text-xl cursor-pointer hover:text-primary" onClick={() => copyNote(note)} />
-              <FaTrash className="text-xl cursor-pointer hover:text-error" onClick={() => initDeleteNoteModal(note)} />
-              <MdEdit className="text-xl cursor-pointer hover:text-accent" onClick={() => editForm(note)} />
+            <div className="flex justify-between items-center gap-5 pt-5 mt-auto">
+              <p className="capitalize break-words text-sm tracking-wide">{note?.time?.toDate().toLocaleDateString('en-us', options)}</p>
+              <div className="flex items-center justify-center gap-5">
+                <MdContentCopy className="text-xl cursor-pointer hover:text-primary" onClick={() => copyNote(note)} />
+                <FaTrash className="text-xl cursor-pointer hover:text-error" onClick={() => initDeleteNoteModal(note)} />
+                <MdEdit className="text-xl cursor-pointer hover:text-accent" onClick={() => editForm(note)} />
+              </div>
             </div>
           </m.div>
         );

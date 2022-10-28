@@ -57,7 +57,7 @@ function Login() {
           Login
         </button>
       </form>
-      <h3 className="text-center text-neutral-content text-xl uppercase tracking-widest pb-5">Or</h3>
+      <h3 className="text-center text-xl uppercase tracking-widest pb-5">Or</h3>
       <SignInUsingGoogle />
     </m.div>
   );

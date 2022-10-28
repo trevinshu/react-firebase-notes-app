@@ -48,7 +48,7 @@ function EditModal() {
             <div className="flex justify-between items-center">
               <PageHeading>Edit Note</PageHeading>
               <button onClick={closeEditModal}>
-                <MdClose className="text-4xl text-primary-content hover:text-error" />
+                <MdClose className="text-4xl text-error" />
               </button>
             </div>
             <form className="flex flex-col justify-center items-center h-full flex-1 py-10 gap-5" onSubmit={handleSubmit(updateNote)}>

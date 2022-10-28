@@ -11,14 +11,14 @@ function DisplayNotes() {
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
-    <div className="grid p-5 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+    <div className="grid p-5 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
       {notes.map((note) => {
         return (
           <m.div key={note?.id} className="max-h-full flex flex-col flex-1 bg-base-300 p-5 shadow-md rounded-sm " initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div>
               <p className="break-words text-xl tracking-wide">{note?.noteContent}</p>
             </div>
-            <div className="flex justify-between items-center gap-5 pt-5 mt-auto">
+            <div className="flex flex-col justify-center items-start gap-5 pt-5 mt-auto md:flex-row md:items-center md:justify-between">
               <p className="capitalize break-words text-sm tracking-wide">{note?.time?.toDate().toLocaleDateString('en-us', options)}</p>
               <div className="flex items-center justify-center gap-5">
                 <MdContentCopy className="text-xl cursor-pointer hover:text-primary" onClick={() => copyNote(note)} />

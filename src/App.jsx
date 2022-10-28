@@ -16,6 +16,7 @@ import Footer from './components/Footer';
 
 function App() {
   const location = useLocation();
+
   return (
     <AppProvider>
       <LazyMotion features={domAnimation}>

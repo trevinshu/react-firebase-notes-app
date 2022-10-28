@@ -11,6 +11,7 @@ import {
   updatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  deleteUser,
 } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -112,6 +113,32 @@ export const AppProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
       return toast.error('Invalid Email or Password. Please try again.');
+    }
+  };
+
+  //Delete Account
+  const [showDeleteAcctModal, setShowDeleteAcctModal] = useState(false);
+
+  function showDeleteAccountModal() {
+    setShowDeleteAcctModal(true);
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDeleteAccountModal() {
+    setShowDeleteAcctModal(false);
+    document.body.style.overflow = 'auto';
+  }
+
+  const deleteAccount = async (data) => {
+    try {
+      const credential = EmailAuthProvider.credential(auth.currentUser.email, data.password);
+      await reauthenticateWithCredential(auth.currentUser, credential);
+      await deleteUser(auth.currentUser);
+      navigate('/');
+      toast.success('Successfully deleted your account.');
+    } catch (error) {
+      console.log(error);
+      return toast.error('Account deletion failed. Please try again.');
     }
   };
 
@@ -273,8 +300,12 @@ export const AppProvider = ({ children }) => {
         initDeleteNoteModal,
         deleteNote,
         formValues,
+        showDeleteAcctModal,
         copyNote,
         closeDeleteModal,
+        deleteAccount,
+        closeDeleteAccountModal,
+        showDeleteAccountModal,
       }}
     >
       {children}

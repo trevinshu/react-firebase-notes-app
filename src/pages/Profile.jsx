@@ -7,6 +7,7 @@ import UpdatePassword from '../components/UpdatePassword';
 import UpdateEmail from '../components/UpdateEmail';
 import Logout from '../components/Logout';
 import DeleteAccount from '../components/DeleteAccount';
+import DeleteAccountModal from '../components/DeleteAccountModal';
 
 function Profile() {
   const { user } = useContext(AppContext);
@@ -32,6 +33,7 @@ function Profile() {
       )}
       <Logout />
       <DeleteAccount />
+      <DeleteAccountModal />
     </m.div>
   );
 }

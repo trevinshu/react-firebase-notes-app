@@ -27,13 +27,13 @@ function Profile() {
         <>
           <UpdateEmail />
           <UpdatePassword />
+          <DeleteAccount />
+          <DeleteAccountModal />
         </>
       ) : (
         <></>
       )}
       <Logout />
-      <DeleteAccount />
-      <DeleteAccountModal />
     </m.div>
   );
 }

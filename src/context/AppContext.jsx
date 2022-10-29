@@ -12,6 +12,7 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   deleteUser,
+  AuthCredential,
 } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +24,7 @@ export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  //Get and Set Current User
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -49,7 +51,7 @@ export const AppProvider = ({ children }) => {
   const loginWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      toast.success('Login Successful');
+      toast.success('Login Successful. Welcome!');
       navigate('/');
     } catch (error) {
       console.log(error);
@@ -108,7 +110,7 @@ export const AppProvider = ({ children }) => {
   const loginWithEmailAndPassword = async (data) => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
-      toast.success('Login Successful');
+      toast.success('Login Successful. Welcome!');
       navigate('/');
     } catch (error) {
       console.log(error);
@@ -119,16 +121,27 @@ export const AppProvider = ({ children }) => {
   //Delete Account
   const [showDeleteAcctModal, setShowDeleteAcctModal] = useState(false);
 
+  //Show Delete Account Modal
   function showDeleteAccountModal() {
-    setShowDeleteAcctModal(true);
-    document.body.style.overflow = 'hidden';
+    try {
+      setShowDeleteAcctModal(true);
+      document.body.style.overflow = 'hidden';
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  //Close Delete Account Modal
   function closeDeleteAccountModal() {
-    setShowDeleteAcctModal(false);
-    document.body.style.overflow = 'auto';
+    try {
+      setShowDeleteAcctModal(false);
+      document.body.style.overflow = 'auto';
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  //Delete Account
   const deleteAccount = async (data) => {
     try {
       const credential = EmailAuthProvider.credential(auth.currentUser.email, data.password);
@@ -138,7 +151,7 @@ export const AppProvider = ({ children }) => {
       toast.success('Successfully deleted your account.');
     } catch (error) {
       console.log(error);
-      return toast.error('Account deletion failed. Please try again.');
+      toast.error('Account deletion failed. Please try again.');
     }
   };
 
@@ -157,10 +170,12 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  //Start of pagination
   const [notes, setNotes] = useState([]);
   const [lastDocs, setLastDocs] = useState(null);
   const [firstDocs, setFirstDocs] = useState(null);
 
+  //Initial Page Load
   useEffect(() => {
     if (user) {
       const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), limit(10));
@@ -183,20 +198,29 @@ export const AppProvider = ({ children }) => {
     }
   }, [user]);
 
+  //Fetch More Data
   const fetchMore = async () => {
-    const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), startAfter(lastDocs.data().time), limit(10));
-
-    const documents = await getDocs(q);
-    updateState(documents);
+    try {
+      const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), startAfter(lastDocs.data().time), limit(10));
+      const documents = await getDocs(q);
+      updateState(documents);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  //Fetch Less Data
   const fetchLess = async () => {
-    const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), endBefore(firstDocs.data().time), limitToLast(10));
-
-    const documents = await getDocs(q);
-    updateState(documents);
+    try {
+      const q = query(collectionRef, where('user', '==', user?.uid), orderBy('time', 'desc'), endBefore(firstDocs.data().time), limitToLast(10));
+      const documents = await getDocs(q);
+      updateState(documents);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  //Set Pagination
   const updateState = (documents) => {
     if (!documents.empty) {
       const tempNotes = [];
@@ -217,24 +241,34 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  //Start of Update functionality
   const [formValues, setFormValues] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  //Show the Edit Form Modal
   function editForm(note) {
-    setShowEditModal(true);
-    document.body.style.overflow = 'hidden';
-    console.log(note);
-    setFormValues(note);
+    try {
+      setShowEditModal(true);
+      document.body.style.overflow = 'hidden';
+      setFormValues(note);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  //Close the edit form
   function closeEditModal() {
-    setShowEditModal(false);
-    setFormValues(null);
-    document.body.style.overflow = 'auto';
-    console.log('hi');
+    try {
+      setShowEditModal(false);
+      setFormValues(null);
+      document.body.style.overflow = 'auto';
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  //Update note
   const updateNote = async (data) => {
     try {
       await updateDoc(doc(collectionRef, data.id), {
@@ -248,24 +282,41 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  //Copy note to clipboard
   const copyNote = (note) => {
-    navigator.clipboard.writeText(note?.noteContent);
-    toast.success('Noted Copied!');
+    try {
+      navigator.clipboard.writeText(note?.noteContent);
+      toast.success('Noted Copied to Clipboard!');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  //Start of Delete functionality
   const [deleteSelectedNote, setDeleteSelectedNote] = useState([]);
 
+  //Show Delete Note Modal
   function initDeleteNoteModal(note) {
-    setShowDeleteModal(true);
-    document.body.style.overflow = 'hidden';
-    setDeleteSelectedNote(note);
+    try {
+      setShowDeleteModal(true);
+      document.body.style.overflow = 'hidden';
+      setDeleteSelectedNote(note);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  //Close Delete Note Modal
   function closeDeleteModal() {
-    setShowDeleteModal(false);
-    document.body.style.overflow = 'auto';
+    try {
+      setShowDeleteModal(false);
+      document.body.style.overflow = 'auto';
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  //Delete note from Firestore
   const deleteNote = async () => {
     try {
       await deleteDoc(doc(collectionRef, deleteSelectedNote.id));

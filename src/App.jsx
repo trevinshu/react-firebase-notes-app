@@ -20,7 +20,7 @@ function App() {
   return (
     <AppProvider>
       <LazyMotion features={domAnimation}>
-        <div className="App flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen">
           <header>
             <Navbar />
           </header>

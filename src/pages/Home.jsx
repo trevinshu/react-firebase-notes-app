@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { Suspense, useContext } from 'react';
 import AppContext from '../context/AppContext';
 import { m } from 'framer-motion';
 import PageHeading from '../components/PageHeading';
@@ -16,18 +16,18 @@ function Home() {
       {!user ? (
         <div className="flex justify-center items-center flex-col gap-4 p-5 m-auto">
           <PageHeading>Login or Sign Up</PageHeading>
-          <React.Suspense fallback={<Spinner />}>
+          <Suspense fallback={<Spinner />}>
             <LoginOrSignUp />
-          </React.Suspense>
+          </Suspense>
         </div>
       ) : (
-        <div>
+        <>
           <AddNote />
-          <React.Suspense fallback={<Spinner />}>
+          <Suspense fallback={<Spinner />}>
             <DisplayNotes />
             <PaginationButtons />
-          </React.Suspense>
-        </div>
+          </Suspense>
+        </>
       )}
     </m.div>
   );

@@ -11,7 +11,7 @@ function SignInUsingGoogle() {
     loginWithGoogle();
   }
   return (
-    <form className="flex justify-center items-center flex-col px-5">
+    <form className="flex justify-center items-center flex-col w-screen pb-5 px-5">
       <button
         type="submit"
         className="bg-secondary text-primary-content text-center flex items-center justify-center gap-3 border-none p-2 rounded-sm tracking-widest uppercase hover:bg-secondary-focus w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"

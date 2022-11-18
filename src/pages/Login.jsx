@@ -31,9 +31,9 @@ function Login() {
     resolver: yupResolver(schema),
   });
   return (
-    <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center gap-2 px-5">
       <PageHeading>Sign In</PageHeading>
-      <form className="flex flex-col items-center justify-center gap-2 p-5" onSubmit={handleSubmit(loginWithEmailAndPassword)}>
+      <form className="flex flex-col items-center justify-center gap-2 w-full" onSubmit={handleSubmit(loginWithEmailAndPassword)}>
         <input
           type="email"
           name="email"
@@ -53,12 +53,27 @@ function Login() {
           {...register('password')}
         />
         <p className="text-error uppercase tracking-widest">{errors.password?.message}</p>
-        <button type="submit" className="bg-primary text-primary-content text-center border-none p-2 rounded-sm tracking-widest uppercase hover:bg-primary-focus w-full sm:w-1/2 lg:w-1/3 xl:w-1/4">
+        <button
+          type="submit"
+          className="bg-primary text-primary-content text-center flex items-center justify-center gap-3 border-none p-2 rounded-sm tracking-widest uppercase hover:bg-secondary-focus w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
+        >
           Login
         </button>
       </form>
-      <h3 className="text-center text-xl uppercase tracking-widest pb-5">Or</h3>
+      <h3 className="text-center text-xl uppercase tracking-widest py-3">Or</h3>
+
       <SignInUsingGoogle />
+
+      <div className=" flex justify-start flex-col bg-base-300 p-5 gap-3 shadow-md rounded-sm w-full sm:w-1/2 lg:w-1/3 xl:w-1/4">
+        <PageHeading>Guest Account:</PageHeading>
+        <h3 className="break-words text-lg tracking-wide capitalize">
+          Email:<span className="lowercase ml-1">tommy@mail.com</span>
+        </h3>
+        <h3 className="break-words text-lg tracking-wide">
+          Password:
+          <span className="lowercase ml-1">123456</span>
+        </h3>
+      </div>
     </m.div>
   );
 }

@@ -13,6 +13,7 @@ import {
   reauthenticateWithCredential,
   deleteUser,
   AuthCredential,
+  browserPopupRedirectResolver,
 } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -50,7 +51,7 @@ export const AppProvider = ({ children }) => {
   //Login with Google Account
   const loginWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider, browserPopupRedirectResolver);
       toast.success('Login Successful. Welcome!');
       navigate('/');
     } catch (error) {

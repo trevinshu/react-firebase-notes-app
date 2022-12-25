@@ -55,7 +55,7 @@ function Login() {
         <p className="text-error uppercase tracking-widest">{errors.password?.message}</p>
         <button
           type="submit"
-          className="bg-primary text-primary-content text-center flex items-center justify-center gap-3 border-none p-2 rounded-sm tracking-widest uppercase hover:bg-secondary-focus w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
+          className="bg-primary text-primary-content text-center flex items-center justify-center gap-3 border-none p-2 rounded-sm tracking-widest uppercase hover:bg-primary-focus w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
         >
           Login
         </button>
